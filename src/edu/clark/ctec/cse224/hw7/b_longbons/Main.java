@@ -1,7 +1,8 @@
 package edu.clark.ctec.cse224.hw7.b_longbons;
 
-import java.util.Random;
-
+/*
+ * http://piratepad.net/ioOBuYb7Es
+ */
 public class Main {
 	static final Random random = new Random();
 	static final EventQueue queue = new EventQueue();
