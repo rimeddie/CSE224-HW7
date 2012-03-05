@@ -8,6 +8,7 @@ public class Main {
 	static final EventQueue queue = new EventQueue();
 
 	public static void main(String[] args) {
+		GUI.createAndShowGui();
 		EventQueue.Event evt = queue.schedule(new Days(1L), new Runnable() {
 			@Override
 			public void run() {
