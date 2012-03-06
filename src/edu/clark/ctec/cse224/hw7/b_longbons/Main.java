@@ -12,15 +12,8 @@ public class Main {
 
 	public static void main(String[] args) {
 		// initially spawn animals before swing gets started.
-		final Grass g = new Grass(new Point(0, 0));
-		map.add(g);
-		queue.schedule(new Days(0), new Runnable() {
-			
-			@Override
-			public void run() {
-				map.remove(g);
-			}
-		});
+		for (int i=0; i<15; i++)
+			new Grass(new Point(random.nextInt(16000)-8000, random.nextInt(16000)-8000)).init(new TickDate());
 		GUI.createAndShowGui();
 	}
 }

@@ -6,25 +6,31 @@ import java.util.Date;
 import java.util.TimeZone;
 
 // grumble about reinventing std::chrono::time_point
-public class Days implements Comparable<Days> {
+public class TickDate implements Comparable<TickDate> {
 	private static final DateFormat formatter = new SimpleDateFormat("MMMM dd");
 	static {
 		formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
 	}
-	private final Date date = new Date();
+	private final Date date;
 	
-	public Days() {}
-	public Days(long days) {
-		date.setTime(days * 86400 * 1000);
+	public TickDate() { this(0L); }
+	public TickDate(long days) {
+		date = new Date(days * 86400 * 1000);
 	}
 
 	@Override
-	public int compareTo(Days o) {
+	public int compareTo(TickDate o) {
 		return date.compareTo(o.date);
 	}
 	
 	@Override
 	public String toString() {
 		return formatter.format(date);
+	}
+	public TickDate plus(int i) {
+		return new TickDate(get() + i);
+	}
+	private long get() {
+		return date.getTime() / (86400 * 1000);
 	}
 }

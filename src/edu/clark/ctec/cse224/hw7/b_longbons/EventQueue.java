@@ -6,9 +6,9 @@ public class EventQueue {
 	
 	public static class Event implements Comparable<Event> {
 		private Runnable runnable;
-		private final Days tick;
+		private final TickDate tick;
 
-		private Event(Days tick, Runnable runnable) {
+		private Event(TickDate tick, Runnable runnable) {
 			this.tick = tick;
 			this.runnable = runnable;
 		}
@@ -25,7 +25,7 @@ public class EventQueue {
 
 	private final PriorityQueue<Event> events = new PriorityQueue<Event>(); 
 
-	public Event schedule(Days tick, Runnable runnable) {
+	public Event schedule(TickDate tick, Runnable runnable) {
 		Event e = new Event(tick, runnable);
 		events.add(e);
 		return e;
@@ -35,7 +35,7 @@ public class EventQueue {
 		return events.isEmpty();
 	}
 
-	public void dispatch_through(Days when) {
+	public void dispatch_through(TickDate when) {
 		while (true) {
 			Event e = events.peek();
 			if (e == null)
@@ -49,7 +49,7 @@ public class EventQueue {
 		}
 	}
 	
-	Days next_event_tick() {
+	TickDate next_event_tick() {
 		Event e = events.peek();
 		if (e == null)
 			return null;

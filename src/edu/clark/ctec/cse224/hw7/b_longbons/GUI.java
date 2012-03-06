@@ -22,14 +22,14 @@ public class GUI extends JPanel {
 	private static final long serialVersionUID = 1L;
 	public GUI(){
 		mainPanel = new DrawEco();
-		clock = new JLabel("January 01");
+		clock = new JLabel("January 01   "); // I hate GUIs
 
 		b1 = new JButton("Next");
 		b1.setMnemonic(KeyEvent.VK_D);
 		b1.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Days when = Main.queue.next_event_tick();
+				TickDate when = Main.queue.next_event_tick();
 				if (when == null)
 					System.exit(0);
 				Main.queue.dispatch_through(when);
