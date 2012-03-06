@@ -14,76 +14,73 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 
-public class GUI extends JPanel implements ActionListener{
+public class GUI extends JPanel {
 
 	private JPanel mainPanel;
-	private JPanel rightPanel;
-	protected static JButton b1, b2;
+	private JButton b1, b2;
+	private JLabel clock;
 	private static final long serialVersionUID = 1L;
 	public GUI(){
-		mainPanel = new JPanel();
-		mainPanel.setLayout(new RiverLayout());
-		mainPanel.setBackground(Color.black);
-		mainPanel.add("left", new DrawEco());
+		mainPanel = new DrawEco();
+		clock = new JLabel("January 01");
 
-		rightPanel = new JPanel();
-		rightPanel.setLayout(new RiverLayout());
-		rightPanel.setPreferredSize(new Dimension(180, 600));
-		rightPanel.setBackground(Color.white);
-		rightPanel.add("left", new DrawClock());
-
-		b1 = new JButton("Rabbit");
+		b1 = new JButton("Next");
 		b1.setMnemonic(KeyEvent.VK_D);
-		b1.setActionCommand("button1");
-		b1.addActionListener(this);
+		b1.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Days when = Main.queue.next_event_tick();
+				if (when == null)
+					System.exit(0);
+				Main.queue.dispatch_through(when);
+				clock.setText(when.toString());
+				GUI.this.repaint();
+			}
+		});
 
-		b2 = new JButton("Fox");
+		b2 = new JButton("TODO implement stop/pause");
 		b2.setMnemonic(KeyEvent.VK_M);
-		b2.setActionCommand("button2");
-		b2.addActionListener(this);
+		b2.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+			}
+		});
 
 		add(mainPanel);
-		add(rightPanel);
+		add(clock);
 		add(b1);
 		add(b2);
-
-
-
 	}
 
-	private class DrawClock extends JLabel {
-		private static final long serialVersionUID = 1L;
-	}
-
-	private class DrawEco extends JPanel{
+	private static class DrawEco extends JPanel{
 		private static final long serialVersionUID = 2L;
-		public static final int xSize = 600;
-		public static final int ySize = 600;
+		private static final int xSize = 600, ySize = 600;
+		private static final Color bgColor = Color.black;
+		private static final Color ovalColor = new Color(0x8b, 0x45, 0x13);
 
 		public DrawEco(){
-			this.setPreferredSize(new Dimension(600,600));
+			this.setPreferredSize(new Dimension(xSize, ySize));
 			this.setSize(xSize, ySize);
 		}
 
 		@Override
 		public void paintComponent(Graphics g){
 			Graphics2D g2 = (Graphics2D) g;
-			Color bgColor = new Color(0,0,0);
-			Color ovalColor = new Color(0,255,0);
 			g2.setBackground(bgColor);
 			g2.setColor(ovalColor);
-			g2.fillOval(0, 0, 600, 600);
+			g2.fillOval(0, 0, xSize, ySize);
+			
+			for (MapObject obj: Main.map) {
+				Point where = obj.location;
+				int x = where.x * xSize / 32000 + xSize/2;
+				int y = where.y * ySize / 32000 + ySize/2;
+				final int r = 16;
+				g2.setColor(obj.get_color());
+				g2.fillOval(x - r/2, y - r/2, r, r);
+			}
 		}
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if("button1".equals(e.getActionCommand())){
-			System.out.println("You Pressed Button 1");
-		} else {
-			System.out.println("You Pressed Button 2");
-		}
-
 	}
 
 	public static void createAndShowGui(){

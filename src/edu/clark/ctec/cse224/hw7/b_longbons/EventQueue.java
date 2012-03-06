@@ -3,10 +3,6 @@ package edu.clark.ctec.cse224.hw7.b_longbons;
 import java.util.PriorityQueue;
 
 public class EventQueue {
-	// TODO: The GUI (once implemented) should read this
-	// or should we instead change dispatch() to call all events
-	// until it reaches the specified tick?
-	Days last_tick = new Days();
 	
 	public static class Event implements Comparable<Event> {
 		private Runnable runnable;
@@ -39,20 +35,24 @@ public class EventQueue {
 		return events.isEmpty();
 	}
 
-	private Runnable pop() {
-		Event e = events.poll();
+	public void dispatch_through(Days when) {
+		while (true) {
+			Event e = events.peek();
+			if (e == null)
+				return;
+			if (e.tick.compareTo(when) > 0)
+				return;
+			events.poll(); // returns e again
+			if (e.runnable == null)
+				continue;
+			e.runnable.run();
+		}
+	}
+	
+	Days next_event_tick() {
+		Event e = events.peek();
 		if (e == null)
 			return null;
-		// Should this be conditional or not? But see comment above.
-		// if (e.runnable != null)
-			last_tick = e.tick;
-		return e.runnable; // may also be null
+		return e.tick;
 	}
-
-	public void dispatch() {
-		Runnable runnable = pop();
-		if (runnable != null)
-			runnable.run();
-	}
-
 }
