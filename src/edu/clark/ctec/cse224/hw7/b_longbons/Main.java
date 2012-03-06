@@ -12,8 +12,12 @@ public class Main {
 
 	public static void main(String[] args) {
 		// initially spawn animals before swing gets started.
-		for (int i=0; i<15; i++)
-			new Grass(new Point(random.nextInt(16000)-8000, random.nextInt(16000)-8000)).init(new TickDate());
+		TickDate.setCurrentDate(new TickDate());
+		for(int ix = 0; ix<5; ix++){
+		new Grass(new Point(random.nextInt(16000)-8000, random.nextInt(16000)-8000)).init(new TickDate());
+		new Rabbit(new Point(random.nextInt(16000)-8000, random.nextInt(16000)-8000));
+		new Fox(new Point(random.nextInt(16000)-8000, random.nextInt(16000)-8000));
+		}
 		GUI.createAndShowGui();
 	}
 }

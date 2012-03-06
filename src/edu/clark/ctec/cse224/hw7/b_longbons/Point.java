@@ -1,7 +1,8 @@
 package edu.clark.ctec.cse224.hw7.b_longbons;
 
 public class Point {
-	final int x, y;
+	int x;
+	int y;
 	public Point(int x, int y) {
 		this.x = x;
 		this.y = y;

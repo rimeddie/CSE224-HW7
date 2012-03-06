@@ -22,7 +22,7 @@ public class GUI extends JPanel {
 	private static final long serialVersionUID = 1L;
 	public GUI(){
 		mainPanel = new DrawEco();
-		clock = new JLabel("January 01   "); // I hate GUIs
+		clock = new JLabel("January 01   "); // I hate you too Ben
 
 		b1 = new JButton("Next");
 		b1.setMnemonic(KeyEvent.VK_D);

@@ -11,7 +11,8 @@ public class TickDate implements Comparable<TickDate> {
 	static {
 		formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
 	}
-	private final Date date;
+	private static Date date;
+	private static TickDate currentDate;
 	
 	public TickDate() { this(0L); }
 	public TickDate(long days) {
@@ -20,17 +21,27 @@ public class TickDate implements Comparable<TickDate> {
 
 	@Override
 	public int compareTo(TickDate o) {
-		return date.compareTo(o.date);
+		return getDate().compareTo(o.getDate());
 	}
 	
 	@Override
 	public String toString() {
-		return formatter.format(date);
+		return formatter.format(getDate());
 	}
 	public TickDate plus(int i) {
 		return new TickDate(get() + i);
 	}
-	private long get() {
-		return date.getTime() / (86400 * 1000);
+	long get() {
+		return getDate().getTime() / (86400 * 1000);
+	}
+	public static Date getDate() {
+		return date;
+	}
+	
+	public static TickDate getCurrentDate() {
+		return TickDate.currentDate;
+	}
+	public static void setCurrentDate(TickDate currentDate) {
+		TickDate.currentDate = currentDate;
 	}
 }
